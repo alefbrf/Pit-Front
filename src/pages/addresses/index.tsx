@@ -3,7 +3,7 @@ import IAddress from "../../shared/interfaces/IAddress"
 import { AddressService } from "../../shared/services/api/Addresses/AddressesService";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardActions, CardContent, IconButton, Typography } from "@mui/material";
-import { Add, AddCircle, ArrowBack, Delete } from "@mui/icons-material";
+import { AddCircle, ArrowBack, Delete } from "@mui/icons-material";
 
 export default function Addresses() {
     const [addresses, setAddresses] = useState<IAddress[]>([]);
@@ -74,7 +74,7 @@ export default function Addresses() {
                                 paddingBottom: '0',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => navigation(`${window.location.pathname}/address/${address.id}`)}
+                            onClick={() => navigation(`${window.location.hash.replaceAll("#", "")}/address/${address.id}`)}
                             >                                
                                 {address.street}, {address.number} {address.complement && `- ${address.complement}`}<br></br>
                                 {address.neighborhood}<br></br>
@@ -114,7 +114,7 @@ export default function Addresses() {
                             paddingBottom: '0 !important',
                             cursor: 'pointer'
                         }}
-                        onClick={() => navigation(`${window.location.pathname}/address`)}
+                        onClick={() => navigation(`${window.location.hash.replaceAll("#", "")}/address`)}
                         >                                
                             <AddCircle style={{
                                 marginRight: '10px'

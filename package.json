@@ -1,5 +1,6 @@
 {
   "name": "coffeebreak",
+  "homepage": "https://alefbrf.github.io/Pit-Front/#",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +8,8 @@
     "start": "vite --open",
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -63,7 +63,7 @@ export default function Cart() {
     async function searchProducts(value: string) {
         setFilter(value);
         const response = await CartService.getAll(1, value);
-        setProducts(response);        
+        setProducts(response); 
     }
 
     async function searchMoreProducts() {
@@ -86,7 +86,7 @@ export default function Cart() {
         searchProducts('');
         searchTotalProducts();
         searchAddresses();
-
+        
         
         AdminService.getConfigs().
             then(response => {
@@ -151,7 +151,7 @@ export default function Cart() {
                 ref={gridRef}
                 >
                 {products?.map((product) => 
-                    <ProductCart key={product.id} product={new Product(product)} onChange={updateProduct} ProductOrder={false}/>
+                    <ProductCart key={product.id} product={new Product(product)} onChange={updateProduct} ProductOrder={false} updateList={() => searchProducts(filter)}/>
                 )}
             </div>
             <Paper sx={{
@@ -221,7 +221,7 @@ export default function Cart() {
                                         }
                                     })}
                                     value={address || null}
-                                    onChange={(event, newValue) => setAddress(newValue)}
+                                    onChange={(event, newValue) => {setAddress(newValue); console.log(event)}}
                                     renderInput={(params) => <TextField {...params} label="Endereço *" error={addressError}/>}
                                 />
                             }

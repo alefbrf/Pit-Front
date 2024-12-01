@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, IconButton, Link, Paper, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, Dialog, IconButton, Link, Paper, Snackbar, SnackbarContent, TextField, Typography, useTheme } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { getUser, logout } from "../../shared/services/api/auth/authentication";
 import { Link as RouterLink } from "react-router-dom";
@@ -15,6 +15,9 @@ export default function Profile() {
     const theme = useTheme();
     const muiUtils = useContext(MUIWrapperContext);
     const [dialogOpen, setDialogOpen] = useState(false);
+    
+    const [snackBarOpen, setSnackBarOpen] = useState(false);
+
     const [formData, setFormData] = useState({
         address: "",
         deliveryTax: ""
@@ -71,7 +74,8 @@ export default function Profile() {
             address: formData.address,
             deliveryTax: Number(deliveryTax)
         }).
-            then(response => {
+            then(() => {                
+                setSnackBarOpen(true);
             }).
             catch(error => {
                 setErrors(error.errors);
@@ -267,6 +271,20 @@ export default function Profile() {
                     </Button>
                 </Box>
             </Dialog>
+            <Snackbar
+                open={snackBarOpen}
+                anchorOrigin={{ horizontal: "center", vertical: "bottom"}}
+                autoHideDuration={5000}
+                onClose={() => setSnackBarOpen(false)}                
+            >
+                <SnackbarContent
+                    sx={{
+                        backgroundColor: 'green',
+                        color: 'white'
+                    }}
+                    message="Operação realizada com sucesso!"
+                />
+            </Snackbar>
         </>
     )
 }

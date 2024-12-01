@@ -31,10 +31,11 @@ export default function ProductCard(props: {product: ProductClass}) {
 
     function redirectToProduct() {
         let baseUrl = `/product/${product.id}`
-
-        if (window.location.pathname.length > 1) {
-            baseUrl = `${window.location.pathname}${baseUrl}`
+        
+        if (window.location.hash.length > 2) {
+            baseUrl = `${window.location.hash.replaceAll("#", "")}${baseUrl}`
         }
+        
         navigation(baseUrl, {state: {background: location}});
     }
     return (

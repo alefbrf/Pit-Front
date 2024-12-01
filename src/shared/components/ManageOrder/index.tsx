@@ -203,7 +203,7 @@ export default function ManageOrder(props: {order: IOrder, deliveryMans?: IUser[
                                     id: deliveryMan?.id,
                                     label: deliveryMan?.label
                                 } : null}
-                                onChange={(event, newValue) => updateOrderDeliveryMan(newValue)}
+                                onChange={(event, newValue) => {updateOrderDeliveryMan(newValue); console.log(event)}}
                                 renderInput={(params) => <TextField {...params} label="Entregador *" />}
                             />
                         }

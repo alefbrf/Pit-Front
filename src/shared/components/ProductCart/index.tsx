@@ -1,15 +1,18 @@
 
 import { useLocation, useNavigate } from "react-router-dom";
 import {Product as ProductClass} from "../../classes/Product";
-import { Card, CardActions, CardContent, CardMedia, Checkbox, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, CardMedia, Checkbox, IconButton, Typography } from "@mui/material";
 import Logo from "../logo";
 import PlusMinusNumberInput from "../PlusMinusNumberInput";
 import { useState } from "react";
+import { Delete } from "@mui/icons-material";
+import { CartService } from "../../../shared/services/api/Cart/CartService";
 
 interface Props {
     product: ProductClass,
     onChange?: (id: number, quantity: number, checked: boolean) => void,
-    ProductOrder: boolean
+    ProductOrder: boolean,
+    updateList?: () => void
 }
 
 export default function ProductCart(props: Props) {
@@ -24,8 +27,8 @@ export default function ProductCart(props: Props) {
         }
         let baseUrl = `/product/${product.id}`
 
-        if (window.location.pathname.length > 1) {
-            baseUrl = `${window.location.pathname}${baseUrl}`
+        if (window.location.hash.length > 2) {
+            baseUrl = `${window.location.hash.replace("#", "")}${baseUrl}`
         }
         navigation(baseUrl, {state: {background: location}});
     }
@@ -38,6 +41,16 @@ export default function ProductCart(props: Props) {
     const handleQuantity = (quantity: number) => {
         setQuantity(quantity);        
         props.onChange?.(props.product.id, quantity, checked);
+    }
+
+    function removeCartItem(event: React.BaseSyntheticEvent) {
+        event.stopPropagation();
+        CartService.removeItemCart(product.id).
+            then(() => {
+                if(props.updateList) {
+                    props.updateList();
+                }
+            });
     }
     
     return (
@@ -54,10 +67,12 @@ export default function ProductCart(props: Props) {
                     paddingTop: '10px',
                     paddingBottom: '10px',
                     paddingRight: '10px',
+                    maxWidth: '700px',
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
-                    paddingLeft: props.ProductOrder ? '10px' : 0
+                    paddingLeft: props.ProductOrder ? '10px' : 0,
+                    position: 'relative'
                 }}
             >
                 {!props.ProductOrder && 
@@ -69,6 +84,8 @@ export default function ProductCart(props: Props) {
                         image={product.imageUrl}
                         sx={{
                             height: '100%',
+                            maxWidth: '30%',
+                            minWidth: '30%',
                             width: '30%',
                             aspectRatio: 1
                         }}
@@ -78,6 +95,7 @@ export default function ProductCart(props: Props) {
                     <div style={{
                         height: '100%',
                         maxWidth: '30%',
+                        minWidth: '30%',
                         width: '30%',
                         display:'flex',
                         alignItems: 'center',
@@ -105,7 +123,7 @@ export default function ProductCart(props: Props) {
                         <Typography variant="body1" sx={{
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
+                            paddingRight: '10px'
                         }}>
                             {product.name}
                         </Typography>
@@ -136,6 +154,17 @@ export default function ProductCart(props: Props) {
                         }
                     </CardActions>
                 </div>
+                {!props.ProductOrder && 
+                    <IconButton sx={{
+                            position: 'absolute',
+                            top: 0,
+                            right: 0
+                        }}
+                        onClick={removeCartItem}
+                    >
+                        <Delete/>
+                    </IconButton>
+                }
             </Card>
         </div>
     );

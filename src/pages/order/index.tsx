@@ -231,9 +231,25 @@ export default function Order() {
                     alignItems: 'center',
                     justifyContent: 'space-between'
                 }}>
-                    <Typography>
-                        Total: {PriceFormat(order?.price || 0)}
-                    </Typography>
+                    <div>
+                        {order?.isDelivery && config && config.deliveryTax > 0 &&
+                            <>
+                                <Typography variant="body2">
+                                    {order?.isDelivery && config && config.deliveryTax > 0 &&
+                                        `Subtotal: ${PriceFormat(order?.price - config.deliveryTax)}`
+                                    }
+                                </Typography>
+                                <Typography variant="body2">
+                                    {order?.isDelivery && config && config.deliveryTax > 0 &&
+                                        `Taxa de entrega: ${PriceFormat(config.deliveryTax)}`
+                                    }
+                                </Typography>
+                            </>
+                        }
+                        <Typography>
+                            Total: {PriceFormat(order?.price || 0)}
+                        </Typography>
+                    </div>
                     <div style={{display: 'flex', flexGrow: 1, flexShrink: 1, justifyContent: 'flex-end'}}>
                         {(user?.role == Role.Admin || user?.role == Role.DeliveryMan) &&
                             <>
@@ -251,7 +267,7 @@ export default function Order() {
                                             id: deliveryMan?.id,
                                             label: deliveryMan?.label
                                         } : null}
-                                        onChange={(event, newValue) => updateOrderDeliveryMan(newValue)}
+                                        onChange={(event, newValue) => {updateOrderDeliveryMan(newValue); console.log(event)}}
                                         renderInput={(params) => <TextField {...params} label="Entregador *" />}
                                     />
                                 }
