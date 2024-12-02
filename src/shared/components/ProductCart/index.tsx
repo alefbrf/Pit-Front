@@ -123,7 +123,10 @@ export default function ProductCart(props: Props) {
                         <Typography variant="body1" sx={{
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            paddingRight: '10px'
+                            paddingRight: '10px',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 1,
+                            WebkitBoxOrient: 'vertical'
                         }}>
                             {product.name}
                         </Typography>

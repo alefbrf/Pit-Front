@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, Snackbar, SnackbarContent, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { addressDTO, AddressService } from "../../shared/services/api/Addresses/AddressesService";
@@ -7,6 +7,7 @@ import { addressDTO, AddressService } from "../../shared/services/api/Addresses/
 export default function Address() {
     const {id} = useParams();
     const navigation = useNavigate();
+    const [snackBarOpen, setSnackBarOpen] = useState(false);
 
     const [formData, setFormData] = useState<addressDTO>({
         postalCode: "",
@@ -217,6 +218,20 @@ export default function Address() {
                     </Button>
                 </Box>
             </div>
+            <Snackbar
+                open={snackBarOpen}
+                anchorOrigin={{ horizontal: "center", vertical: "bottom"}}
+                autoHideDuration={5000}
+                onClose={() => setSnackBarOpen(false)}                
+            >
+                <SnackbarContent
+                    sx={{
+                        backgroundColor: 'green',
+                        color: 'white'
+                    }}
+                    message="Endereço salvo com sucesso!"
+                />
+            </Snackbar>
         </>
     )
 }
